@@ -5,7 +5,7 @@
 ## Возможности
 
 - Подключение по `apiUrl`, `idInstance`, `apiTokenInstance` с проверкой `GetStateInstance`.
-- Создание чата по номеру РФ или Беларуси через `CheckAccount`, получение настоящего MAX `chatId`.
+- Создание чата по международному номеру телефона через `CheckAccount`, получение настоящего MAX `chatId`.
 - Отправка текстовых сообщений методом `SendMessage`.
 - Приём входящих текстовых уведомлений через `ReceiveNotification` (long polling) и подтверждение каждого через `DeleteNotification`.
 - Минималистичный UI, мобильная адаптация, обработка ошибок, повторная отправка.
@@ -19,7 +19,7 @@ npm install
 npm run dev
 ```
 
-Проверки: `npm run build`, `npm run lint`, `npm run test`.
+Проверки:\n\n```bash\nnpm run build\nnpm run lint\nnpm run test\n```\n\nПеред публикацией приложение также было проверено вручную на реальном MAX-инстансе: сообщения успешно отправляются и принимаются.
 
 ## Настройка GREEN-API
 
