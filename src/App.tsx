@@ -121,7 +121,7 @@ function Chat({ client, onLogout }: { client: GreenApi; onLogout: () => void }) 
   async function createChat(event: FormEvent) {
     event.preventDefault();
     const digits = normalizePhone(phone);
-    if (!digits) { setNewChatError('Введите номер РФ (+7) или Беларуси (+375) с кодом страны.'); return; }
+    if (!digits) { setNewChatError('Введите номер в международном формате с кодом страны.'); return; }
     setCreating(true);
     setNewChatError('');
     try {
@@ -146,7 +146,8 @@ function Chat({ client, onLogout }: { client: GreenApi; onLogout: () => void }) 
     try {
       const sent = await client.sendMessage(chatId, message.text);
       setMessages(old => old.map(item => item.id === message.id ? { ...item, id: sent.idMessage || item.id, status: 'sent' } : item));
-    } catch {
+    } catch (caught) {
+      console.error('Failed to send message:', caught);
       setMessages(old => old.map(item => item.id === message.id ? { ...item, status: 'failed' } : item));
     }
   }
@@ -190,7 +191,7 @@ export default function App() {
   async function connect(credentials: Credentials) {
     const api = new GreenApi(credentials);
     const { stateInstance } = await api.getState();
-    if (!['authorized', 'suspended'].includes(stateInstance)) throw new Error(`Инстанс не готов: ${stateInstance}. Авторизуйте его в кабинете GREEN-API.`);
+    if (stateInstance !== 'authorized') throw new Error(`Инстанс не готов: ${stateInstance}. Авторизуйте его в кабинете GREEN-API.`);
     setClient(api);
   }
   return client ? <Chat client={client} onLogout={() => setClient(null)}/> : <Login onConnect={connect}/>;
